@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'core/css/autocomplete.css' %}">
+{% endblock %}
+{% block principal_content %}
+    {% if messages %}
+    <!-- Alert -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 30px;">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    <div class="container-fluid" style="background-image:url({% static 'core/images/home.jpg' %});background-size: auto;">
+        <div class="row align-items-center" style="height: 300px">
+            <div class="col-lg-4 col-xs-1"></div>
+            <div class="col-lg-4 col-xs-8">
+                <p class="text-white">
+                    <h1 align="center" style="color:white;">Buscador de  <strong>material</strong></h1>
+                </p>
+                <form method="get" action="ramo_best_match_from_text" autocomplete="off">{% csrf_token %}
+                    <div class="input-group input-search">
+                            <input id="main-searcher" type="text" class="form-control" name="data" placeholder="Ejemplo: Cálculo II">
+                            <button type="submit" value="submit" class="btn btn-primary" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Autocomplete scripts -->
+    <script src="{% static 'core/js/autocomplete.js' %}"></script>
+    <!-- Autocomplete -->
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                var ramos = data["ramos"];
+                autocomplete(document.getElementById("main-searcher"), ramos);
+            }
+        };
+        xhttp.open("GET", "get_ramos", true);
+        xhttp.send();
+    </script>
+{% endblock %}

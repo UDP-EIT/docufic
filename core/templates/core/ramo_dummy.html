@@ -1,0 +1,33 @@
+<!doctype html>
+	<html lang="en">
+	 	<head>
+		</head>
+	<body>
+		Información de Ramo<br>
+		&nbsp;&nbsp;Nombre: {{ ramo.nombre }}<br>
+		&nbsp;&nbsp;Código: {{ ramo.nombre }}<br>
+		<br>
+		Evaluaciones<br>
+		{% for fila in tabla_evaluaciones %}
+		&nbsp;&nbsp;{{fila.tipo}}<br>
+			<br>
+			{% for evaluacion in fila.evaluaciones %}
+			&nbsp;&nbsp;&nbsp;&nbsp;Año: {{evaluacion.anyo}}<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;Semestre: {{evaluacion.semestre}}<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;Archivo: {{evaluacion.archivo}}<br>
+			<br>
+			{% endfor %}
+			<br>
+		{% endfor %}
+		Materiales<br>
+		<br>
+		{% for material in tabla_materiales %}
+			<br>
+			&nbsp;&nbsp;Nombre: {{material.nombre}}<br>
+			&nbsp;&nbsp;Descripción: {{material.descripcion}}<br>
+			&nbsp;&nbsp;Autor: {{material.autor}}<br>
+			&nbsp;&nbsp;Archivo: {{material.archivo}}<br>
+			<br>
+		{% endfor %}
+	</body>
+</html>

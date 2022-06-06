@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block principal_content %}
+<div class=container>
+	{% if not tabla_evaluaciones and not tabla_materiales %}
+	<!-- Alert -->
+	<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 30px;">
+	  Este ramo no tiene ningún archivo asociado.
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	{% endif %}
+	<div class="card mx-auto" style="margin-top: 30px;">
+	  <div class="card-header">
+	    <h3>{{ ramo.nombre }}</h3>
+	  </div>
+	  <ul class="list-group list-group-flush">
+	    <li class="list-group-item">
+	    	<h4>Evaluaciones</h4>
+	    	<div class="row">
+			    <div class="col-3">
+			      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			      	{% for fila in tabla_evaluaciones|dictsort:"tipo" reversed %}
+			        <a class="nav-link {% if forloop.counter0 == 0 %}active{% endif %}" id="v-pills-home-tab" data-toggle="pill" href="#ev{{forloop.counter0}}" role="tab" aria-controls="v-pills-home" aria-selected="true">{{fila.tipo}}</a>
+			       	{% endfor %}
+			      </div>
+			    </div>
+			    <div class="col-9">
+			      <div class="tab-content" id="v-pills-tabContent">
+			      	{% for fila in tabla_evaluaciones %}
+			        <div class="tab-pane fade show {% if forloop.counter0 == 0 %}active{% endif %}" id="ev{{forloop.counter0}}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+			          <table class="table">
+						  <thead>
+						    <tr>
+						      <th scope="col">Año</th>
+						      <th scope="col">Semestre</th>
+						      <th scope="col">Descarga</th>
+						    </tr>
+						  </thead>
+						  	<tbody>
+						  {% for evaluacion in fila.evaluaciones %}
+						    <tr>
+						      <td>{{evaluacion.anyo}}</td>
+						      <td>{{evaluacion.semestre}}</td>
+						      <td><a class="btn btn-success" href="{{evaluacion.archivo.url}}" role="button" target="_blank">Ver</a></td>
+						    </tr>
+						  {% endfor %}
+						  </tbody>
+					  </table>
+			        </div>
+			       	{% endfor %}
+			      </div>
+			    </div>
+	  		</div>
+		</li>
+		{% if tabla_materiales %}
+	    <li class="list-group-item">
+	    	<h4>Material adicional</h4>
+	    	<div class="row">
+			    <div class="col-12">
+		          <table class="table">
+					  <thead>
+					    <tr>
+					      <th scope="col">Nombre</th>
+					      <th scope="col">Descripción</th>
+					      <th scope="col">Autor</th>
+					      <th scope="col">Descarga</th>
+					    </tr>
+					  </thead>
+					  	<tbody>
+					  	{% for material in tabla_materiales %}
+					    <tr>
+					      <td>{{material.nombre}}</td>
+					      <td>{{material.descripcion}}</td>
+					      <td>{{material.autor}}</td>
+					      <td><td><a class="btn btn-success" href="{{material.archivo.url}}" role="button" target="_blank">Ver</a></td></td>
+					    </tr>
+					    {% endfor %}
+					  </tbody>
+				  </table>
+			    </div>
+	  		</div>
+		</li>
+		{% endif %}
+	  </ul>
+	</div>
+</div>
+{% endblock %}
